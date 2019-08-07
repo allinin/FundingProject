@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.atcrowdfunding.manager.dao.RoleMapper" >
+  <resultMap id="BaseResultMap" type="com.atguigu.atcrowdfunding.bean.Role" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_role
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.atguigu.atcrowdfunding.bean.Role" >
+    insert into t_role (name)
+    values (#{name,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.atguigu.atcrowdfunding.bean.Role" >
+    update t_role
+    set name = #{name,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, name
+    from t_role
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, name
+    from t_role
+  </select>
+
+  <select id="queryRoler" parameterType="map" resultType="com.atguigu.atcrowdfunding.bean.Role">
+    select id,name
+      from t_role
+    <where>
+      <if test="queryContent!=null">
+        name like concat("%",#{queryContent},"%")
+      </if>
+    </where>
+          limit #{startIndex},#{pagesize}
+
+  </select>
+
+  <select id="queryNum" resultType="int">
+    select count(*) from t_role
+    <where>
+    <if test="queryContent!=null">
+      name like concat("%",#{queryContent},"%")
+    </if>
+    </where>
+  </select>
+  <delete id="batchDeleteObj">
+    delete from t_role where id in
+    <foreach collection="userList" item="role" open="(" close=")" separator=",">
+      #{role.id}
+    </foreach>
+  </delete>
+</mapper>

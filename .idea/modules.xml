@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/bean/bean.iml" filepath="$PROJECT_DIR$/bean/bean.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/main/main.iml" filepath="$PROJECT_DIR$/main/main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/manager_api/manager_api.iml" filepath="$PROJECT_DIR$/manager_api/manager_api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/manager_impl/manager_impl.iml" filepath="$PROJECT_DIR$/manager_impl/manager_impl.iml" />
+      <module fileurl="file://$PROJECT_DIR$/parent/parent.iml" filepath="$PROJECT_DIR$/parent/parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/potal_api/potal_api.iml" filepath="$PROJECT_DIR$/potal_api/potal_api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/potal_impl/potal_impl.iml" filepath="$PROJECT_DIR$/potal_impl/potal_impl.iml" />
+    </modules>
+  </component>
+</project>

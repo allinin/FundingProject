@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/main" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/main/src/main/resources/log4j.properties" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/main/src/main/webapp/META-INF" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/main/src/main/webapp/WEB-INF/jsp/common" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/main/src/main/webapp/WEB-INF/jsp/error" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/main/src/main/webapp/WEB-INF/jsp/index.jsp" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/main/src/main/webapp/WEB-INF/jsp/login.jsp" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/main/src/main/webapp/WEB-INF/jsp/main.jsp" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/main/src/main/webapp/WEB-INF/jsp/success.jsp" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/main/src/main/webapp/WEB-INF/jsp/user" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/main/src/main/webapp/bootstrap" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/main/src/main/webapp/css" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/main/src/main/webapp/fonts" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/main/src/main/webapp/img" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/main/src/main/webapp/jquery" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/main/src/main/webapp/script" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/main/src/main/webapp/ztree" charset="GBK" />
+  </component>
+</project>
