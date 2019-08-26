@@ -35,4 +35,13 @@
     select id, pid, name, icon, url
     from t_permission
   </select>
+  <select id="getRootPermission" resultMap="BaseResultMap">
+   select id, pid, name, icon, url
+    from t_permission
+    where pid is null
+ </select>
+  <select id="getChildrenPermissionByPid" parameterType="int" resultMap="BaseResultMap">
+    select id, pid, name, icon, url
+		from t_permission where pid = #{id}
+  </select>
 </mapper>
