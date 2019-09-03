@@ -17,4 +17,12 @@ public interface PermissionMapper {
     Permission getRootPermission();
 
     List<Permission> getChildrenPermissionByPid(Integer id);
+
+    int savePermission(Permission permission);
+
+    Permission getPermissionById(Integer id);
+
+    int updatePermission(Permission permission);
+    List<Integer> getPermissionIdsByRoleId(Integer id);
+
 }

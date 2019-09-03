@@ -44,4 +44,28 @@
     select id, pid, name, icon, url
 		from t_permission where pid = #{id}
   </select>
+
+  <insert id="savePermission" parameterType="Permission">
+    insert into t_permission (id,
+		pid, name,
+		icon, url)
+		values (#{id,jdbcType=INTEGER},
+		#{pid,jdbcType=INTEGER},
+		#{name,jdbcType=VARCHAR},
+		#{icon,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR})
+  </insert>
+  <select id="getPermissionById" parameterType="int" resultMap="BaseResultMap">
+    select * from t_permission where id= #{id,jdbcType=INTEGER};
+  </select>
+
+    <update id="updatePermission" parameterType="Permission">
+    update t_permission
+    set name= #{name,jdbcType=VARCHAR},
+        icon= #{icon,jdbcType=VARCHAR},
+    url= #{url,jdbcType=VARCHAR} where id= #{id,jdbcType=INTEGER}
+  </update>
+    <select id="getPermissionIdsByRoleId" parameterType="int" resultType="int">
+		select permissionid
+		from t_role_permission where roleid = #{roleid}
+	</select>
 </mapper>

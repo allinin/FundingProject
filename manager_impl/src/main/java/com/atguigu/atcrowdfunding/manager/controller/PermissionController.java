@@ -27,6 +27,86 @@ public class PermissionController {
         return "permission/index";
     }
 
+    @RequestMapping("/toAdd")
+    public String toAdd()
+    {
+        return "permission/add";
+    }
+
+    @RequestMapping("/toUpdate")
+    public String toUpdate(Integer id,Map map)
+    {   Permission permission=permissionService.getPermissionById(id);
+        map.put("permission",permission);
+        return "permission/update";
+    }
+    @RequestMapping("/doAdd")
+    @ResponseBody
+    public Object doAdd(Permission permission)
+    {
+       AjaxResult result =new AjaxResult();
+       try{
+           String icon=permissionService.getPermissionById(permission.getPid()).getIcon();
+           permission.setIcon(icon);
+           int count=permissionService.savePermission(permission);
+           result.setSuccess(count==1);
+
+
+       }catch (Exception e)
+       {
+           result.setSuccess(false);
+           result.setMessage("保存许可树数据失败");
+       }
+
+       return  result;
+    }
+
+    @RequestMapping("/doUpdate")
+    @ResponseBody
+    public Object doUpdate(Permission permission)
+    {
+        AjaxResult result=new AjaxResult();
+        try{
+            int count=permissionService.updatePermission(permission);
+            result.setSuccess(count==1);
+
+        }catch (Exception e)
+        {
+           result.setSuccess(false);
+            result.setMessage("修改许可树数据失败!");
+        }
+        return result;
+    }
+
+    @RequestMapping("/doDelete")
+    @ResponseBody
+    public Object doDelete(Integer id)
+    {
+        AjaxResult result=new AjaxResult();
+        List<Permission> childrenPermissions = permissionService.getChildrenPermissionByPid(id);
+
+        try {
+            if (!childrenPermissions.isEmpty()) {
+                int count=0;
+                for (Permission permisson : childrenPermissions) {
+                    int childId=permisson.getId();
+                    permissionService.deletePermission(childId);
+                    count++;
+                }
+                int i = permissionService.deletePermission(id);
+                result.setSuccess((count+i)==(childrenPermissions.size()+1));
+            }else {
+                int m=permissionService.deletePermission(id);
+                result.setSuccess(m==1);
+           }
+
+
+        }catch (Exception e)
+        {
+            result.setSuccess(false);
+        }
+        return result;
+    }
+
     //demo1:需要多次查询数据库，性能损耗大
 //    @RequestMapping("/loadData")
 //    @ResponseBody
@@ -95,25 +175,30 @@ public class PermissionController {
 //            result.setSuccess(false);
 //            result.setMessage("加载失败");
 //        }
+
+
 //
 //        return result;
 //    }
 
-    @RequestMapping("/loadData")
-    @ResponseBody
-    public Object loadData()
-    {
-        AjaxResult result=new AjaxResult();
-        try{
+            //一次全部加载数据，减少与数据库的通信。提高访问效率
+            @RequestMapping("/loadData")
+            @ResponseBody
+            public Object loadData()
+            {
+                AjaxResult result=new AjaxResult();
 
-            List<Permission> root=new ArrayList<>();
-            List<Permission> childrenPermission=permissionService.queryAllPermission();
-            for(Permission permission:childrenPermission)
+                try{
+
+                    List<Permission> root=new ArrayList<>();
+                    List<Permission> childrenPermission=permissionService.queryAllPermission();
+                    for(Permission permission:childrenPermission)
             {
                 //设置子菜单
                 Permission child=permission;
                 if(permission.getPid()==null)
                 {
+                    permission.setOpen(true);
                     root.add(permission);
                 }else{
 
@@ -185,4 +270,6 @@ public class PermissionController {
 //
 //    return result ;
 //}
+
+
 }

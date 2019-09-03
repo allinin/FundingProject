@@ -26,11 +26,10 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
-            <div><a class="navbar-brand" style="font-size:32px;" href="user.html">众筹平台 - 用户维护</a></div>
+            <div><a class="navbar-brand" style="font-size:32px;" href="user.html">众筹平台 - 许可维护</a></div>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-
                 <%@ include file="/WEB-INF/jsp/common/top.jsp"%>
 
             </ul>
@@ -45,7 +44,7 @@
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
             <div class="tree">
-                <%@ include file="/WEB-INF/jsp/common/menu.jsp" %>
+                <%@ include file="/WEB-INF/jsp/common/top.jsp" %>
             </div>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -57,12 +56,16 @@
             <div class="panel panel-default">
                 <div class="panel-heading">表单数据<div style="float:right;cursor:pointer;" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-question-sign"></i></div></div>
                 <div class="panel-body">
-                    <form id="updateForm">
+                    <form id="insertForm">
                         <div class="form-group">
-                            <label for="fname">角色名称</label>
-                            <input type="text" class="form-control" id="fname"value="${role.name}">
+                            <label for="fname">许可名称</label>
+                            <input type="text" class="form-control" id="fname" placeholder="请输入许可名称">
+                       </div>
+                        <div class="form-group">
+                            <label for="furl">许可URL</label>
+                            <input type="text" class="form-control" id="furl" placeholder="请输入许可url">
                         </div>
-                        <button id="updateBtn"type="button" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i> 修改</button>
+                        <button id="insertBtn"type="button" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i> 新增</button>
                         <button id="resetBtn" type="button" class="btn btn-danger"><i class="glyphicon glyphicon-refresh"></i> 重置</button>
                     </form>
                 </div>
@@ -114,14 +117,16 @@
         });
     });
 
-    $("#updateBtn").click(function () {
-        var name= $("#fname").val()
+    $("#insertBtn").click(function () {
+        var fname=$("#fname")
+        var furl=$("#furl")
         $.ajax({
             type:"POST",
-            url:"${APP_PATH}/role/doUpdate.do",
+            url:"${APP_PATH}/permission/doAdd.do",
             data:{
-                "id":"${role.id}",
-                "name":name
+                "name":fname.val(),
+                "url":furl.val(),
+                "pid":"${param.id}"
             },
             beforeSend:function() {
                 loadingIndex=layer.load("数据加载中",{icon:6})
@@ -131,7 +136,7 @@
                 layer.close(loadingIndex);
                 if(result.success)
                 {
-                    window.location.href="${APP_PATH}/role/index.htm";
+                    window.location.href="${APP_PATH}/permission/index.htm";
                 }else{
                     layer.msg("保存用户失败", {time:1000, icon:5, shift:6});
                 }
@@ -143,7 +148,7 @@
     });
 
     $("#resetBtn").click(function(){
-        $("#updateForm")[0].reset();
+        $("#insertForm")[0].reset();
     });
 
 

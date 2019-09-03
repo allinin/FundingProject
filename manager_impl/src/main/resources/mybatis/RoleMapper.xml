@@ -54,4 +54,15 @@
       #{role.id}
     </foreach>
   </delete>
+
+  <select id="queryRoleById" parameterType="integer" resultType="Role">
+    select * from t_role where id=#{id}
+  </select>
+
+  <delete id="deleteRolePermissionRelationship" parameterType="integer">
+    delete from t_role_permission where roleid=#{roleid}
+  </delete>
+  <insert id="insertRolePermission" parameterType="RolePermission">
+    insert into t_role_permission (roleid,permissionid) values (#{roleid},#{permissionid})
+  </insert>
 </mapper>
