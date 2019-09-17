@@ -54,8 +54,13 @@
         </property>
     </bean>
 
+    <!--配置 文件上传解析器-->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" p:defaultEncoding="UTF-8">
         <property name="maxUploadSize" value="2097152"/>
         <property name="resolveLazily" value="true"/>
     </bean>
+    <mvc:interceptors>
+        <bean id="loginInterceptor" class="com.atguigu.atcrowdfunding.Interceptor.LoginInterceptor"></bean>
+        <bean id="AuthInterceptor" class="com.atguigu.atcrowdfunding.Interceptor.AuthInterceptor"></bean>
+    </mvc:interceptors>
 </beans>

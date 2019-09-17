@@ -3,6 +3,7 @@ package com.atguigu.atcrowdfunding.manager.service;
 import java.util.List;
 import java.util.Map;
 
+import com.atguigu.atcrowdfunding.bean.Permission;
 import com.atguigu.atcrowdfunding.bean.Role;
 import com.atguigu.atcrowdfunding.bean.User;
 import com.atguigu.atcrowdfunding.ov.Data;
@@ -30,4 +31,5 @@ public interface UserService {
 	int saveUserRoleRelationship(Integer userid,Data data);
 	int deleteRole(Integer userid, Data data);
 
+	List<Permission> queryPermissionsByUserId(Integer id);
 }

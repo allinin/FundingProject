@@ -1,5 +1,6 @@
 package com.atguigu.atcrowdfunding.ov;
 
+import com.atguigu.atcrowdfunding.bean.Advertisement;
 import com.atguigu.atcrowdfunding.bean.MemberCert;
 import com.atguigu.atcrowdfunding.bean.User;
 
@@ -12,7 +13,7 @@ public class Data {
     private List<User> datas = new ArrayList<User>();
 
     private List<Integer> ids ;
-
+    private List<Advertisement> ads;
     private List<MemberCert> certimgs = new ArrayList<MemberCert>();
 
     public List<User> getUserList() {
@@ -47,6 +48,11 @@ public class Data {
         this.certimgs = certimgs;
     }
 
+    public List<Advertisement> getAds() {
+        return ads;
+    }
 
-
+    public void setAds(List<Advertisement> ads) {
+        this.ads = ads;
+    }
 }

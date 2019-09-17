@@ -1,5 +1,6 @@
 package com.atguigu.atcrowdfunding.manager.service.impl;
 
+import com.atguigu.atcrowdfunding.bean.Permission;
 import com.atguigu.atcrowdfunding.bean.Role;
 import com.atguigu.atcrowdfunding.bean.User;
 import com.atguigu.atcrowdfunding.manager.dao.UserMapper;
@@ -101,5 +102,10 @@ public class UsrServiceImpl implements UserService{
     @Override
     public int deleteRole(Integer userid, Data data) {
         return userMapper.deleteRole(userid,data);
+    }
+
+    @Override
+    public List<Permission> queryPermissionsByUserId(Integer id) {
+        return userMapper.queryPermissionsByUserId(id);
     }
 }

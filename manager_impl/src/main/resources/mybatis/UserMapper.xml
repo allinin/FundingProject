@@ -91,4 +91,9 @@
             #{roleid}
         </foreach>
     </delete>
+	<select id="queryPermissionsByUserId" parameterType="integer" resultType="Permission">
+         select distinct t_permission.id, t_permission.pid, t_permission.name,t_permission.icon,t_permission.url from t_permission where id in(select permissionid from t_role_permission where roleid in
+          (select roleid from t_user_role where userid=#{id} ))
+
+	</select>
 </mapper>

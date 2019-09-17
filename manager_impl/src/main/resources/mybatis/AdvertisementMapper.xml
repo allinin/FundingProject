@@ -37,4 +37,27 @@
     select id, name, iconpath, status, url, userid
     from t_advertisement
   </select>
+  <select id="queryPage1" parameterType="map" resultType="Advertisement">
+    select * from t_advertisement
+    <where>
+      <if test="pagetext!=null">
+        and name like concat('%',#{pagetext},'%')
+      </if>
+    </where>
+    limit #{startIndex},#{pagesize}
+  </select>
+  <select id="queryCount" resultType="int">
+    select count(*) from t_advertisement
+    <where>
+       <if test="pagetext!=null">
+      and name like concat('%',#{pagetext},'%')
+       </if>
+    </where>
+  </select>
+  <delete id="batchDelete">
+    delete from t_advertisement where id in
+    <foreach collection="datas.ads" item="p" open="(" close=")" separator=",">
+      #{p.id}
+    </foreach>
+  </delete>
 </mapper>

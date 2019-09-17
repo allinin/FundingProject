@@ -1,5 +1,6 @@
 package com.atguigu.atcrowdfunding.controller;
 
+import com.atguigu.atcrowdfunding.bean.Permission;
 import com.atguigu.atcrowdfunding.bean.User;
 import com.atguigu.atcrowdfunding.util.AjaxResult;
 import com.atguigu.atcrowdfunding.util.Const;
@@ -11,8 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class DispatcherController {
@@ -57,7 +57,31 @@ public class DispatcherController {
             paramMap.put("type", type);
 
             User user = userService.queryUserlogin(paramMap);
+            List<Permission>loginPermissions=userService.queryPermissionsByUserId(user.getId());
 
+            Permission rootPermission=null;
+            Map<Integer,Permission>map=new HashMap<>();
+            Set<String>myUris=new HashSet<>();
+            for(Permission permission:loginPermissions)
+            {
+                map.put(permission.getId(),permission);
+                myUris.add("/"+permission.getUrl());
+            }
+            session.setAttribute(Const.MY_URIS, myUris);
+            for(Permission innerPermission:loginPermissions)
+            {
+                Permission child=innerPermission;
+                if(child.getPid()==null)
+                {
+                    rootPermission = child;
+                }else{
+                    Permission parent=map.get(child.getPid());
+                    parent.setOpen(true);
+                    parent.getChildren().add(child);
+                }
+
+            }
+            session.setAttribute(Const.LOGIN_ROOT_PERMISSION,rootPermission);
             session.setAttribute(Const.LOGIN_USER, user);
             result.setSuccess(true);
             // {"success":true}
