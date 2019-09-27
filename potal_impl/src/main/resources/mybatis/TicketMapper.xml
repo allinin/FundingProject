@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.atcrowdfunding.potal.dao.TicketMapper" >
+    <resultMap id="BaseResultMap" type="com.atguigu.atcrowdfunding.bean.Ticket">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="memberid" property="memberid" jdbcType="VARCHAR"/>
+        <result column="authcode" property="authcode" jdbcType="CHAR" />
+        <result column="piid" property="piid" jdbcType="VARCHAR" />
+        <result column="pstep" property="pstep" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="CHAR" />
+    </resultMap>
+<select id="queryTicketByMemberid" parameterType="integer" resultMap="BaseResultMap">
+    select id,memberid,piid,status,authcode,pstep from t_ticket
+      where memberid=#{memberid}
+</select>
+    <update id="updateTicketProcessPstep" parameterType="Ticket">
+        update t_ticket set pstep=#{pstep}
+        where memberid=#{memberid}
+    </update>
+</mapper>

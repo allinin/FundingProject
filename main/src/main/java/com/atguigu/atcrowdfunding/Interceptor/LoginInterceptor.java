@@ -1,5 +1,6 @@
 package com.atguigu.atcrowdfunding.Interceptor;
 
+import com.atguigu.atcrowdfunding.bean.Member;
 import com.atguigu.atcrowdfunding.bean.User;
 import com.atguigu.atcrowdfunding.util.Const;
 import org.springframework.web.servlet.ModelAndView;
@@ -40,12 +41,14 @@ public class LoginInterceptor extends HandlerInterceptorAdapter{
          //判断用户是否已经登录，登录边放行
              HttpSession session=request.getSession();
              User user=(User)session.getAttribute(Const.LOGIN_USER);
-             if(user==null)
+             Member member = (Member)session.getAttribute(Const.LOGIN_MEMBER);
+
+           if(user!=null || member!=null)
              {
-                 response.sendRedirect(request.getContextPath()+"/login.htm");
-                 return false;
-             }else {
                  return true;
+             }else {
+               response.sendRedirect(request.getContextPath()+"/login.htm");
+               return false;
 
 
          }

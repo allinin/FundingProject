@@ -31,4 +31,7 @@
     select id, accttype, certid
     from t_account_type_cert
   </select>
+  <select id="queryCertAcctType" resultType="map">
+    select accttype,certid from t_account_type_cert
+  </select>
 </mapper>

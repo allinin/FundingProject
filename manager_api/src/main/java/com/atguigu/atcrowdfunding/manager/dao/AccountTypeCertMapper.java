@@ -2,6 +2,7 @@ package com.atguigu.atcrowdfunding.manager.dao;
 
 import com.atguigu.atcrowdfunding.bean.AccountTypeCert;
 import java.util.List;
+import java.util.Map;
 
 public interface AccountTypeCertMapper {
     int deleteByPrimaryKey(Integer id);
@@ -13,4 +14,6 @@ public interface AccountTypeCertMapper {
     List<AccountTypeCert> selectAll();
 
     int updateByPrimaryKey(AccountTypeCert record);
+
+    List<Map<String, Object>> queryCertAcctType();
 }

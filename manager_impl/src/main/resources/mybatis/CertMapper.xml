@@ -27,4 +27,14 @@
     select id, name
     from t_cert
   </select>
+  <select id="queryCertByAcctType" resultMap="BaseResultMap">
+      select * from t_cert where id in
+      (select certid from t_account_type_cert where accttype=#{accttype})
+  </select>
+  <insert id="insertAcctTypeCert" parameterType="map">
+     insert into t_account_type_cert(certid,accttype) values(#{certid},#{accttype});
+  </insert>
+  <delete id="deleteAcctTypeCert" parameterType="map">
+    delete from t_account_type_cert where accttype=#{accttype} and certid=#{certid}
+  </delete>
 </mapper>
