@@ -5,6 +5,7 @@ import com.atguigu.atcrowdfunding.bean.MemberCert;
 import com.atguigu.atcrowdfunding.ov.Data;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import java.util.Map;
 
 public interface MemberMapper{
@@ -15,5 +16,8 @@ public interface MemberMapper{
 
     int updateMember(Member loginMember);
 
-    void insertMemberCert(MemberCert memberCert);
+    void insertMemberCert( MemberCert memberCert);
+    void updateEmail(Member member);
+
+    void updateAuthstatus(Member loginMember);
 }

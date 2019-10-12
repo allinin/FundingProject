@@ -35,11 +35,22 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public void insertMemberCert(List<MemberCert> certimgs) {
-        for(MemberCert memberCert:certimgs)
+        for(int i=0;i<certimgs.size();i++)
         {
-            memberMapper.insertMemberCert(memberCert);
+            memberMapper.insertMemberCert(certimgs.get(i));
         }
 
+
+    }
+
+    @Override
+    public void updateEmail(Member loginMember) {
+        memberMapper.updateEmail(loginMember);
+    }
+
+    @Override
+    public void updateAuthstatus(Member loginMember) {
+        memberMapper.updateAuthstatus(loginMember);
     }
 
 }

@@ -2,6 +2,7 @@ package com.atguigu.atcrowdfunding.bean;
 
 import org.springframework.web.multipart.MultipartFile;
 
+
 public class MemberCert {
     private Integer id;
 

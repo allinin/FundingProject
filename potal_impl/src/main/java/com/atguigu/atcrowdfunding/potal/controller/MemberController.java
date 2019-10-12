@@ -5,11 +5,19 @@ import com.atguigu.atcrowdfunding.bean.Member;
 import com.atguigu.atcrowdfunding.bean.MemberCert;
 import com.atguigu.atcrowdfunding.bean.Ticket;
 import com.atguigu.atcrowdfunding.ov.Data;
+import com.atguigu.atcrowdfunding.potal.listener.PassListener;
+import com.atguigu.atcrowdfunding.potal.listener.RefuseListener;
 import com.atguigu.atcrowdfunding.potal.service.MemberService;
 import com.atguigu.atcrowdfunding.potal.service.TicketService;
 import com.atguigu.atcrowdfunding.util.AjaxResult;
 import com.atguigu.atcrowdfunding.util.Const;
 
+import org.activiti.engine.RepositoryService;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.aspectj.weaver.loadtime.Aj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,9 +31,7 @@ import com.atguigu.atcrowdfunding.manager.service.CertService;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 
 @Controller
@@ -39,10 +45,25 @@ public class MemberController {
     @Autowired
     private CertService certService;
 
+    @Autowired
+    private RepositoryService repositoryService;
+
+    @Autowired
+    private TaskService taskService;
+
+    @Autowired
+    private RuntimeService runtimeService;
+
     @RequestMapping("/index")
     public String index()
     {
         return "member/index";
+    }
+
+    @RequestMapping("/checkmail")
+    public String checkmail()
+    {
+        return "member/checkmail";
     }
 
     @RequestMapping("/apply")
@@ -109,6 +130,11 @@ public class MemberController {
         return "member/basicinfo";
     }
 
+    @RequestMapping("/checkauthcode")
+    public String checkauthcode()
+    {
+        return "/member/checkauthcode";
+    }
 
     @RequestMapping("/updateBasicInfo")
     @ResponseBody
@@ -164,11 +190,12 @@ public class MemberController {
                 String oldFileName=file.getOriginalFilename();
                 String fileName= UUID.randomUUID().toString()+oldFileName.substring(oldFileName.lastIndexOf("."));
                 memberCert.setIconpath(fileName);
-                String filePath=realPath+"/"+fileName;
+                String filePath=realPath+"/cert"+"/"+fileName;
                 file.transferTo(new File(filePath));
             }
 
-            memberService.insertMemberCert(data.getCertimgs());
+            List<MemberCert> certimgs = data.getCertimgs();
+            memberService.insertMemberCert(certimgs);
 
             //更新ticket
             Ticket ticket=ticketService.queryTicketByMemberid(loginMember.getId());
@@ -181,6 +208,83 @@ public class MemberController {
         }catch (Exception e)
         {
             e.printStackTrace();
+            result.setSuccess(false);
+        }
+
+        return result;
+    }
+
+    @RequestMapping("/startProcess")
+    @ResponseBody
+    public Object startProcess(HttpSession session,String email){
+        AjaxResult result =new AjaxResult();
+        try{
+            Member loginMember=(Member) session.getAttribute(Const.LOGIN_MEMBER);
+
+            if(!email.equals(loginMember.getEmail()))
+            {
+                loginMember.setEmail(email);
+                memberService.updateEmail(loginMember);
+            }
+            //启动实名认证流程，系统自动发送邮件，生成验证码，验证邮箱是否合法
+            ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionKey("auth").singleResult();
+
+
+            StringBuilder authcode =new StringBuilder();
+            for(int i=0;i<4;i++)
+            {
+                authcode.append(new Random().nextInt(10));
+            }
+             Map<String,Object> variables=new HashMap<>();
+             variables.put("toEmail",email);
+             variables.put("authcode",authcode.toString());
+             variables.put("loginacct",loginMember.getLoginacct());
+             variables.put("passListener",new PassListener());
+             variables.put("refuseListener",new RefuseListener());
+
+            ProcessInstance processInstance=runtimeService.startProcessInstanceById(processDefinition.getId(),variables);
+            Ticket ticket=ticketService.queryTicketByMemberid(loginMember.getId());
+            ticket.setPstep("checkmail");
+            ticket.setPiid(processInstance.getId());
+            ticket.setAuthcode(authcode.toString());
+            ticketService.updateTicket(ticket);
+            result.setSuccess(true);
+        }catch (Exception e)
+        {
+            result.setSuccess(false);
+        }
+        return result;
+    }
+
+    @RequestMapping("/finishApply")
+    @ResponseBody
+    public Object finish(String authcode,HttpSession session)
+    {
+        AjaxResult result=new AjaxResult();
+
+        try{
+            Member loginMember=(Member) session.getAttribute(Const.LOGIN_MEMBER);
+            //让当前用户完成验证码审核功能
+            Ticket ticket=ticketService.queryTicketByMemberid(loginMember.getId());
+            if(ticket.getAuthcode().equals(authcode))
+            {
+                //完成审核验证码任务
+                Task task = taskService.createTaskQuery().processInstanceId(ticket.getPiid()).
+                        taskAssignee(loginMember.getLoginacct()).singleResult();
+                taskService.complete(task.getId());
+
+                loginMember.setAuthstatus("1");
+                memberService.updateAuthstatus(loginMember);
+
+                ticket.setPstep("finishApply");
+                ticketService.updatePstep(ticket);
+                result.setSuccess(true);
+            }else {
+                result.setSuccess(false);
+                result.setMessage("验证码输入错误！！！");
+            }
+        }catch (Exception e)
+        {
             result.setSuccess(false);
         }
 

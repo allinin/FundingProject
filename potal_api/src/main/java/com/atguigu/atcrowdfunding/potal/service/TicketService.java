@@ -6,4 +6,8 @@ public interface TicketService {
     Ticket queryTicketByMemberid(Integer id);
 
     void updateTicketProcessPstep(Ticket ticket);
+
+    void updateTicket(Ticket ticket);
+
+    void updatePstep(Ticket ticket);
 }

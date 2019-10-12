@@ -1,6 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java"
-         pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html;charset=UTF-8"
+      pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -32,7 +31,7 @@
                 <div id="navbar" class="navbar-collapse collapse" style="float:right;">
                     <ul class="nav navbar-nav">
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> ${sessionScope.member.loginacct}<span class="caret"></span></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i>${sessionScope.member.loginacct}<span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="member.html"><i class="glyphicon glyphicon-scale"></i> 会员中心</a></li>
                                 <li><a href="#"><i class="glyphicon glyphicon-comment"></i> 消息</a></li>
@@ -55,24 +54,18 @@
 
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" ><a href="#"><span class="badge">1</span> 基本信息</a></li>
-        <li role="presentation" class="active"><a href="#"><span class="badge">2</span> 资质文件上传</a></li>
-        <li role="presentation"><a href="#"><span class="badge">3</span> 邮箱确认</a></li>
+        <li role="presentation" ><a href="#"><span class="badge">2</span> 资质文件上传</a></li>
+        <li role="presentation" class="active"><a href="#"><span class="badge">3</span> 邮箱确认</a></li>
         <li role="presentation"><a href="#"><span class="badge">4</span> 申请确认</a></li>
     </ul>
 
-    <form role="form" id="CertUpload" style="margin-top:20px;" enctype="multipart/form-data" method="post">
-
-        <c:forEach items="${sessionScope.queryCertByAcctType}" var="cert" varStatus="status">
-            <div class="form-group">
-                <label >${cert.name}</label>
-                <input type="hidden" name="certimgs[${status.index}].certid" value="${cert.id}">
-                <input type="file" name="certimgs[${status.index}].fileImg" class="form-control" >
-                <br>
-                <img src="img/pic.jpg" style="display: none"><!--可以在这里设置一个模版图片，这里我们取消这个模版图片的显示，所以将display设置为none-->
-            </div>
-        </c:forEach>
-        <button type="button" onclick="window.location.href='${APP_PATH}/member/basicinfo.htm'" class="btn btn-default">上一步</button>
-        <button type="button" id="nextBtn" class="btn btn-success">下一步</button>
+    <form role="form" style="margin-top:20px;">
+        <div class="form-group">
+            <label for="exampleInputEmail1">邮箱地址</label>
+            <input type="text" class="form-control" value="${loginMember.email}" id="exampleInputEmail1" placeholder="请输入用于接收验证码的邮箱地址">
+        </div>
+        <button type="button" onclick="window.location.href='apply-1.html'" class="btn btn-default">上一步</button>
+        <button id="nextBtn" type="button" class="btn btn-success">下一步</button>
     </form>
     <hr>
 </div> <!-- /container -->
@@ -84,7 +77,7 @@
                     <a rel="nofollow" href="http://www.atguigu.com">关于我们</a> | <a rel="nofollow" href="http://www.atguigu.com">服务条款</a> | <a rel="nofollow" href="http://www.atguigu.com">免责声明</a> | <a rel="nofollow" href="http://www.atguigu.com">网站地图</a> | <a rel="nofollow" href="http://www.atguigu.com">联系我们</a>
                 </div>
                 <div class="copyRight">
-                    Copyright ?2017-2017 atguigu.com 版权所有
+                    Copyright ?2017-2017atguigu.com 版权所有
                 </div>
             </div>
 
@@ -94,62 +87,28 @@
 <script src="${APP_PATH}/jquery/jquery-2.1.1.min.js"></script>
 <script src="${APP_PATH}/bootstrap/js/bootstrap.min.js"></script>
 <script src="${APP_PATH}/script/docs.min.js"></script>
-<script src="${APP_PATH}/jquery/jquery-form/jquery-form.min.js"></script>
 <script src="${APP_PATH}/jquery/layer/layer.js"></script>
 <script>
     $('#myTab a').click(function (e) {
         e.preventDefault()
         $(this).tab('show')
     });
-    
     $("#nextBtn").click(function () {
-        
-    });
-
-  //实现在浏览器上图片预览
-    $(":file").change(function(event){
-        //获取当前选择的文件
-        var files = event.target.files;
-        var file;
-
-        if (files && files.length > 0) {
-            file = files[0];
-
-            var URL = window.URL || window.webkitURL;
-            // 生成本地图片路径
-            var imgURL = URL.createObjectURL(file);
-
-            var imgObj = $(this).next().next(); //获取同辈紧邻的下一个元素
-            //console.log(imgObj);
-            imgObj.attr("src", imgURL);
-            imgObj.show();
-        }
-    });
-
-    $("#nextBtn").click(function () {
-
-        var loadingIndex=-1;
-        var options={
-            url:"${APP_PATH}/member/doUploadCert.do",
-            beforeSubmit:function () {
-                loadingIndex=layer.msg("数据正在保存",{time:1000,icon:6});
-                return true;
+        $.ajax({
+            type:"POST",
+            url:"${APP_PATH}/member/startProcess.do",
+            data:{
+                "email":$("#exampleInputEmail1").val()
             },
-            success:function(result)
-            {
-                layer.close(loadingIndex);
+            success:function (result) {
                 if(result.success)
                 {
                     window.location.href="${APP_PATH}/member/apply.htm";
                 }else{
-                    layer.msg("数据保存失败",{time:1000,icon:5,shift:6})
+                       layer.msg("实名认证申请失败",{time:1000,icon:5,shift:6})
                 }
             }
-
-        };
-
-        $("#CertUpload").ajaxSubmit(options);//异步提交
-        return;
+        })
     })
 </script>
 </body>

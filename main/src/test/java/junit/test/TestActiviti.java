@@ -30,7 +30,7 @@ public class TestActiviti{
     public void test2()
     {
         RepositoryService repositoryService = processEngine.getRepositoryService();
-        Deployment deploy = repositoryService.createDeployment().addClasspathResource("MyProcess2.bpmn").deploy();
+        Deployment deploy = repositoryService.createDeployment().addClasspathResource("auth.bpmn").deploy();
         System.out.println(deploy);
     }
      //查询部署流程定义

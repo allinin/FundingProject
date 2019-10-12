@@ -15,4 +15,8 @@ public interface MemberService {
     int updateMember(Member loginMember);
 
     void insertMemberCert(List<MemberCert>certimgs);
+
+    void updateEmail(Member loginMember) ;
+
+    void updateAuthstatus(Member loginMember);
 }

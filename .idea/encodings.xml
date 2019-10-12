@@ -4,6 +4,7 @@
     <file url="file://$PROJECT_DIR$/main" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/main/src/main/resources/log4j.properties" charset="GBK" />
     <file url="file://$PROJECT_DIR$/main/src/main/resources/spring/spring-flow.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/main/src/main/resources/spring/spring-mail.xml" charset="GBK" />
     <file url="file://$PROJECT_DIR$/main/src/main/webapp/META-INF" charset="GBK" />
     <file url="file://$PROJECT_DIR$/main/src/main/webapp/WEB-INF/jsp/common" charset="GBK" />
     <file url="file://$PROJECT_DIR$/main/src/main/webapp/WEB-INF/jsp/error" charset="GBK" />

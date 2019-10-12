@@ -6,4 +6,7 @@ public interface TicketMapper{
     Ticket queryTicketByMemberid(Integer id);
 
     void updateTicketProcessPstep(Ticket ticket);
+    void updateTicket(Ticket ticket);
+
+    void updatePstep(Ticket ticket);
 }

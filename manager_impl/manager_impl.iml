@@ -82,5 +82,6 @@
     <orderEntry type="library" name="Maven: org.vaadin.addons:dcharts-widget:0.10.0" level="project" />
     <orderEntry type="module" module-name="bean" />
     <orderEntry type="module" module-name="manager_api" />
+    <orderEntry type="library" name="Maven: javax.servlet:servlet-api:2.5" level="project" />
   </component>
 </module>

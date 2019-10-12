@@ -17,4 +17,10 @@
         update t_ticket set pstep=#{pstep}
         where memberid=#{memberid}
     </update>
+    <update id="updateTicket" parameterType="Ticket">
+        update t_ticket set pstep=#{pstep},piid=#{piid},authcode=#{authcode} where id=#{id}
+    </update>
+    <update id="updatePstep">
+        update t_ticket set pstep=#{pstep} where id=#{id}
+    </update>
 </mapper>

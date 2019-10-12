@@ -20,4 +20,14 @@ public class TicketServiceImpl implements TicketService{
     public void updateTicketProcessPstep(Ticket ticket) {
         ticketMapper.updateTicketProcessPstep(ticket);
     }
+
+    @Override
+    public void updateTicket(Ticket ticket) {
+        ticketMapper.updateTicket(ticket);
+    }
+
+    @Override
+    public void updatePstep(Ticket ticket) {
+        ticketMapper.updatePstep(ticket);
+    }
 }

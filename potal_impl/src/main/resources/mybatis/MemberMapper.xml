@@ -31,10 +31,18 @@
       tel = #{tel,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
 </update>
-    <insert id="insertMemberCert" parameterType="MemberCert">
+    <insert id="insertMemberCert" parameterType="MemberCert" >
 
-    insert into t_member_cert(memberid,certid,iconpath)values
-           (#{memberCert.memberid},#{memberCert.certid},#{memberCert.iconpath})
+
+        insert into t_member_cert(memberid,certid,iconpath)values
+           (#{memberid},#{certid},#{iconpath})
 
     </insert>
+    <update id="updateEmail" parameterType="Member">
+        update t_member set email=#{email} where id=#{id}
+    </update>
+
+    <update id="updateAuthstatus">
+        update t_member set authstatus=#{authstatus} where id=#{id}
+    </update>
 </mapper>
